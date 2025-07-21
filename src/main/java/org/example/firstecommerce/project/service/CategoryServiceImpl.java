@@ -1,5 +1,6 @@
 package org.example.firstecommerce.project.service;
 
+import org.example.firstecommerce.project.Exceptions.APIException;
 import org.example.firstecommerce.project.Exceptions.ResourceNotFoundException;
 import org.example.firstecommerce.project.model.Category;
 import org.example.firstecommerce.project.repositories.CategoryRepository;
@@ -28,6 +29,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void createCategory(Category category) {
+        Category savedCategory = categoryRepository.findByCategoryName(category.getCategoryName());
+        if (savedCategory != null) {
+            throw new APIException("Category with name " + category.getCategoryName() + " already exists");
+        }
         category.setCategoryId(nextId++);
         categoryRepository.save(category);
 
