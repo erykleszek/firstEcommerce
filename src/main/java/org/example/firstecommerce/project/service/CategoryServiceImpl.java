@@ -3,31 +3,36 @@ package org.example.firstecommerce.project.service;
 import org.example.firstecommerce.project.Exceptions.APIException;
 import org.example.firstecommerce.project.Exceptions.ResourceNotFoundException;
 import org.example.firstecommerce.project.model.Category;
+import org.example.firstecommerce.project.payload.CategoryDTO;
+import org.example.firstecommerce.project.payload.CategoryResponse;
 import org.example.firstecommerce.project.repositories.CategoryRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-    //private List<Category> categories = new ArrayList<>();
-    private Long nextId = 1L;
+
 
     @Autowired
     private CategoryRepository categoryRepository;
 
+    private ModelMapper modelMapper;
 
     @Override
-    public List<Category> getAllCategories() {
+    public CategoryResponse getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
         if(categories.isEmpty())
             throw new APIException("No cateegory created yet");
-        return categories;
+
+        List<CategoryDTO> categoryDTOS = categories.stream()
+                .map(category -> modelMapper.map(category, CategoryDTO.class))
+                .toList();
+        CategoryResponse categoryResponse = new CategoryResponse();
+        categoryResponse.setContent(categoryDTOS);
+        return categoryResponse;
     }
 
     @Override
@@ -36,7 +41,6 @@ public class CategoryServiceImpl implements CategoryService {
         if (savedCategory != null) {
             throw new APIException("Category with name " + category.getCategoryName() + " already exists");
         }
-        category.setCategoryId(nextId++);
         categoryRepository.save(category);
 
     }

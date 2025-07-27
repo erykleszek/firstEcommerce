@@ -1,11 +1,12 @@
 package org.example.firstecommerce.project.service;
 
 import org.example.firstecommerce.project.model.Category;
+import org.example.firstecommerce.project.payload.CategoryResponse;
 
 import java.util.List;
 
 public interface CategoryService {
-    List<Category> getAllCategories();
+    CategoryResponse getAllCategories();
     void createCategory(Category category);
 
     String deleteCategory(Long categoryId);
