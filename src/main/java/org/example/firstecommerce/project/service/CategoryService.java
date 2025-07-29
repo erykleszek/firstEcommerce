@@ -1,15 +1,16 @@
 package org.example.firstecommerce.project.service;
 
 import org.example.firstecommerce.project.model.Category;
+import org.example.firstecommerce.project.payload.CategoryDTO;
 import org.example.firstecommerce.project.payload.CategoryResponse;
 
-import java.util.List;
+
 
 public interface CategoryService {
     CategoryResponse getAllCategories();
-    void createCategory(Category category);
+    CategoryDTO createCategory(CategoryDTO categoryDTO);
 
-    String deleteCategory(Long categoryId);
+    CategoryDTO deleteCategory(Long categoryId);
 
-    Category updateCategory(Category category, Long categoryId);
+    CategoryDTO updateCategory(CategoryDTO categoryDTO, Long categoryId);
 }
