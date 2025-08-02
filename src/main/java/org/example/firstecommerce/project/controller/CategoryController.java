@@ -3,6 +3,7 @@ package org.example.firstecommerce.project.controller;
 
 
 import jakarta.validation.Valid;
+import org.example.firstecommerce.project.config.AppConstans;
 import org.example.firstecommerce.project.payload.CategoryDTO;
 import org.example.firstecommerce.project.payload.CategoryResponse;
 import org.example.firstecommerce.project.service.CategoryService;
@@ -19,15 +20,15 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/api/echo")
-    public ResponseEntity<String> echoMessage(@RequestParam(name = "message") String message) {
-   // public ResponseEntity<String> echoMessage(@RequestParam(name = "message", defaultValue = "Hello World") String message) {
-        return new ResponseEntity<>("Echo message: " + message, HttpStatus.OK);
-    }
 
     @GetMapping("/api/public/categories")
-    public ResponseEntity<CategoryResponse>getAllCategories(){
-        CategoryResponse categoryResponse = categoryService.getAllCategories();
+    public ResponseEntity<CategoryResponse>getAllCategories(
+            @RequestParam(name = "pageNumber", defaultValue = AppConstans.PAGE_NUMBER, required = false) Integer pageNumber ,
+            @RequestParam(name = "pageSize", defaultValue = AppConstans.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(name = "sortBy", defaultValue = AppConstans.SORT_CATEGORIES_BY, required = false) String sortBy,
+            @RequestParam(name = "sortOrder", defaultValue = AppConstans.SORT_DIR, required = false) String sortOrder)
+    {
+        CategoryResponse categoryResponse = categoryService.getAllCategories(pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(categoryResponse, HttpStatus.OK);
     }
 
