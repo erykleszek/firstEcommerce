@@ -3,6 +3,7 @@ package org.example.firstecommerce.project.controller;
 
 import org.example.firstecommerce.project.model.Product;
 import org.example.firstecommerce.project.payload.ProductDTO;
+import org.example.firstecommerce.project.payload.ProductResponse;
 import org.example.firstecommerce.project.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,5 +24,11 @@ public class ProductController {
                                                  @PathVariable Long categoryId){
       ProductDTO productDTO = productService.addProduct(categoryId, product);
       return new ResponseEntity<>(productDTO, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/public/products")
+    public ResponseEntity<ProductResponse> getAllProducts(){
+        ProductResponse productResponse = productService.getAllProducts();
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 }
